@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tasks_app_bloc/blocs/bloc_exports.dart';
 import 'package:flutter_tasks_app_bloc/models/task.dart';
+import 'package:flutter_tasks_app_bloc/screens/add_task_screen.dart';
 import 'package:flutter_tasks_app_bloc/widgets/tasks_list.dart';
 
 class TasksScreen extends StatelessWidget {
-  TasksScreen({Key? key}) : super(key: key);
-
-  TextEditingController titleController = TextEditingController();
+  const TasksScreen({Key? key}) : super(key: key);
 
   void _addTask(BuildContext context) {
     showModalBottomSheet(
@@ -16,7 +15,7 @@ class TasksScreen extends StatelessWidget {
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-          child: AddTaskScreen(titleController: titleController),
+          child: const AddTaskScreen(),
         ),
       ),
     );
@@ -32,7 +31,7 @@ class TasksScreen extends StatelessWidget {
             title: const Text('Tasks App'),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () => _addTask(context),
                 icon: const Icon(Icons.add),
               )
             ],
@@ -57,43 +56,6 @@ class TasksScreen extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({
-    Key? key,
-    required this.titleController,
-  }) : super(key: key);
-
-  final TextEditingController titleController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          const Text(
-            'Add Task',
-            style: TextStyle(
-              fontSize: 24,
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          TextField(
-            autofocus: true,
-            controller: titleController,
-            decoration: const InputDecoration(
-              label: Text('Title'),
-              border: OutlineInputBorder(),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
