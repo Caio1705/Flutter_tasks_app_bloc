@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tasks_app_bloc/services/app_theme.dart';
 import 'package:path_provider/path_provider.dart';
 import 'blocs/bloc_exports.dart';
 import 'screens/tasks_screen.dart';
@@ -22,16 +23,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TasksBloc(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Tasks App',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const TasksScreen(),
-        onGenerateRoute: appRouter.onGenerateRoute,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => TasksBloc()),
+        BlocProvider(create: (context) => SwitchBloc()),
+      ],
+      child: BlocBuilder<SwitchBloc, SwitchState>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Tasks App',
+            theme: state.switchValue
+                ? AppThemes.appThemeData[AppTheme.darkTheme]
+                : AppThemes.appThemeData[AppTheme.lightTheme],
+            home: const TasksScreen(),
+            onGenerateRoute: appRouter.onGenerateRoute,
+          );
+        },
       ),
     );
   }
